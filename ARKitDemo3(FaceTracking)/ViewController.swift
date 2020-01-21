@@ -23,18 +23,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
+        let configuration = ARFaceTrackingConfiguration()
 
         // Run the view's session
         sceneView.session.run(configuration)
@@ -49,15 +44,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     // MARK: - ARSCNViewDelegate
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        
+        guard let faceAnchor = anchor as? ARFaceAnchor else {return}
+        let blendShips:Dictionary = faceAnchor.blendShapes
+        print("dict - > ",blendShips)
+        let leftSmile:CGFloat = blendShips[ARFaceAnchor.BlendShapeLocation.mouthSmileLeft] as! CGFloat
+        let rightSmile:CGFloat = blendShips[ARFaceAnchor.BlendShapeLocation.mouthSmileRight] as! CGFloat
+        
+        
+        print("leftSmile %f \n rightSmile %f",leftSmile,rightSmile)
+        if leftSmile > 0.5 && rightSmile > 0.5 {
+            print("微笑中")
+        }else {
+            print("没有微笑")
+        }
     }
-*/
     
+
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
