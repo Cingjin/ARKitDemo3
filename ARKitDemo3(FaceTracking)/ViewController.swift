@@ -6,6 +6,8 @@
 //  Copyright © 2020 com.Cingjin. All rights reserved.
 //
 
+// 参考资料：https://www.jianshu.com/p/9d163675157e
+
 import UIKit
 import SceneKit
 import ARKit
